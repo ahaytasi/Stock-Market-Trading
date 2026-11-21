@@ -1,0 +1,19 @@
+MANUAL ACCEPTANCE TEST CHECKLIST
+
+[ ] Register a customer with full name, username, email, and password.
+[ ] Sign in with the new customer account.
+[ ] Confirm the market table displays ticker, current price, volume, market cap, open, high, and low.
+[ ] Submit a BUY order; confirm it appears as PENDING.
+[ ] Cancel a pending order; confirm it disappears from pending orders.
+[ ] During market hours, submit and execute a BUY order; confirm cash decreases and holdings increase.
+[ ] Submit and execute a SELL order for owned shares; confirm cash increases and holdings decrease.
+[ ] Attempt to sell more shares than owned; confirm execution is rejected.
+[ ] Attempt a withdrawal greater than cash balance; confirm it is rejected.
+[ ] Deposit cash; confirm balance and transaction history update.
+[ ] Sign in as admin; create a new stock and confirm it appears on the market dashboard.
+[ ] Change market hours; verify execution is blocked outside configured hours.
+[ ] Add today's date as a holiday; verify market closes and execution is blocked.
+[ ] Verify stock prices update gradually while market is open.
+[ ] Refresh/restart the app; confirm account, holdings, and transaction data persist in SQLite.
+
+Demo admin: admin / Admin123!

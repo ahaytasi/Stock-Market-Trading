@@ -1,98 +1,49 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Responsive stock trading market dashboard prototype">
-  <title>Stock Trading Simulation</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stock Trading System</title><link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"></head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="Stock Trading System home">
-      <span class="brand-mark">↗</span><span>Stock Trading <b>System</b></span>
-    </a>
-    <nav class="main-nav" aria-label="Main navigation">
-      <button class="nav-link active" data-view="market">Market</button>
-      <button class="nav-link" data-view="portfolio">Portfolio</button>
-      <button class="nav-link" data-view="transactions">Transactions</button>
-    </nav>
-    <div class="user-menu"><span class="avatar">JD</span><span>john.doe</span><span aria-hidden="true">⌄</span></div>
-    <button class="mobile-menu" id="mobileMenu" aria-label="Toggle navigation">☰</button>
-  </header>
-
-  <main class="container">
-    <section id="marketView" class="view">
-      <div class="page-heading">
-        <div><p class="eyebrow">OVERVIEW</p><h1>Market Dashboard</h1><p class="muted">Track market activity and explore available stocks.</p></div>
-        <div class="market-status"><span class="status-dot"></span><span id="marketStatus">Market Open</span><small id="marketClock">Prices update automatically</small></div>
-      </div>
-
-      <section class="metric-grid" aria-label="Market summary">
-        <article class="metric-card"><span class="metric-label">Stocks Listed</span><strong id="listedCount">6</strong><span class="metric-foot">Available to trade</span></article>
-        <article class="metric-card"><span class="metric-label">Market Capitalization</span><strong id="totalCap">$0</strong><span class="metric-foot">Based on listed shares</span></article>
-        <article class="metric-card"><span class="metric-label">Advancing</span><strong class="positive" id="advancing">0</strong><span class="metric-foot">Stocks up today</span></article>
-        <article class="metric-card"><span class="metric-label">Declining</span><strong class="negative" id="declining">0</strong><span class="metric-foot">Stocks down today</span></article>
-      </section>
-
-      <section class="panel">
-        <div class="panel-heading">
-          <div><h2>Available Stocks</h2><p class="muted">Select a stock to view its details.</p></div>
-          <label class="search-box"><span aria-hidden="true">⌕</span><input id="stockSearch" type="search" placeholder="Search ticker or company" aria-label="Search stocks"></label>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Stock</th><th>Current Price</th><th>Change</th><th>Available Volume</th><th>Market Cap</th><th>Open</th><th>High</th><th>Low</th><th></th></tr></thead>
-            <tbody id="stockRows"></tbody>
-          </table>
-        </div>
-        <p class="table-note">Market cap = current price × available volume. Values are simulated for this prototype.</p>
-      </section>
-      <div class="dashboard-bottom">
-        <section class="panel chart-panel"><div class="panel-heading"><div><h2>Market Movement</h2><p class="muted">Illustrative intraday price movement</p></div><span class="chart-chip">Today</span></div><canvas id="marketChart" height="170" aria-label="Market movement chart"></canvas></section>
-        <section class="panel market-info"><h2>Market Information</h2><div class="info-row"><span>Trading days</span><b>Monday – Friday</b></div><div class="info-row"><span>Price updates</span><b>Every 3 seconds</b></div><div class="info-row"><span>Order execution</span><b>Demo simulation</b></div><div class="info-row"><span>Market schedule</span><b>Admin controlled</b></div></section>
-      </div>
-    </section>
-
-    <section id="detailView" class="view hidden">
-      <button class="back-link" id="backToMarket">← Back to Market</button>
-      <div class="detail-heading">
-        <div><p class="eyebrow">STOCK DETAILS</p><h1 id="detailCompany">Apple Inc.</h1><span class="ticker-pill" id="detailTicker">AAPL</span></div>
-        <div class="detail-price"><strong id="detailPrice">$0.00</strong><span id="detailChange" class="positive">+0.00%</span></div>
-      </div>
-      <section class="detail-stats">
-        <article><span>Opening Price</span><b id="detailOpen">$0.00</b></article>
-        <article><span>Daily High</span><b id="detailHigh">$0.00</b></article>
-        <article><span>Daily Low</span><b id="detailLow">$0.00</b></article>
-        <article><span>Available Volume</span><b id="detailVolume">0</b></article>
-        <article><span>Market Capitalization</span><b id="detailCap">$0</b></article>
-      </section>
-      <div class="detail-layout">
-        <section class="panel chart-panel"><div class="panel-heading"><div><h2>Price Performance</h2><p class="muted">Simulated intraday history</p></div><span class="chart-chip">1D</span></div><canvas id="detailChart" height="260" aria-label="Selected stock price chart"></canvas></section>
-        <section class="panel order-panel">
-          <h2>Place an Order</h2><p class="muted">Orders use the displayed market price.</p>
-          <div class="order-tabs"><button class="order-tab selected" data-side="buy">Buy</button><button class="order-tab" data-side="sell">Sell</button></div>
-          <label class="field-label" for="shareQuantity">Number of shares</label><input id="shareQuantity" class="quantity-input" type="number" min="1" step="1" value="10">
-          <div class="estimate"><span>Estimated total</span><strong id="orderEstimate">$0.00</strong></div>
-          <p id="orderHint" class="order-hint">Estimated amount before order confirmation.</p>
-          <button id="placeOrder" class="primary-btn full-width">Place Buy Order</button>
-          <div id="orderMessage" class="message" role="status" aria-live="polite"></div>
-        </section>
-      </div>
-    </section>
-
-    <section id="portfolioView" class="view hidden">
-      <div class="page-heading"><div><p class="eyebrow">ACCOUNT</p><h1>Portfolio</h1><p class="muted">A sample portfolio for the current demo user.</p></div></div>
-      <section class="metric-grid two"><article class="metric-card"><span class="metric-label">Cash Balance</span><strong id="cashBalance">$25,000.00</strong></article><article class="metric-card"><span class="metric-label">Holdings Value</span><strong id="holdingsValue">$0.00</strong></article></section>
-      <section class="panel"><div class="panel-heading"><h2>Your Holdings</h2></div><div class="table-wrap"><table><thead><tr><th>Stock</th><th>Shares</th><th>Current Price</th><th>Market Value</th></tr></thead><tbody id="holdingRows"></tbody></table></div></section>
-    </section>
-
-    <section id="transactionsView" class="view hidden">
-      <div class="page-heading"><div><p class="eyebrow">ACCOUNT</p><h1>Transactions</h1><p class="muted">Orders placed during this browser session.</p></div></div>
-      <section class="panel"><div class="table-wrap"><table><thead><tr><th>Time</th><th>Type</th><th>Stock</th><th>Shares</th><th>Price</th><th>Total</th><th>Status</th></tr></thead><tbody id="transactionRows"><tr><td colspan="7" class="empty-state">No transactions yet.</td></tr></tbody></table></div></section>
-    </section>
-    <footer>Stock Trading System <span>Educational prototype · Simulated prices · No real money</span></footer>
-  </main>
-  <script src="app.js"></script>
-</body>
-</html>
+<header class="topbar"><a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">↗</span>Stock Trading <b>System</b></a>
+<nav><a class="active" href="#market">Market</a><a href="#portfolio">Portfolio</a><a href="#activity">Transactions</a>{% if user.role=='admin' %}<a href="#admin">Administration</a>{% endif %}</nav>
+<div class="user"><span>{{ user.full_name }}</span><small>{{ user.role|capitalize }}</small><a class="logout" href="{{ url_for('logout') }}">Sign out</a></div></header>
+<main class="container">
+{% with messages=get_flashed_messages(with_categories=true) %}{% if messages %}<div class="alerts">{% for category,message in messages %}<div class="alert {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+<section class="welcome"><div><p class="eyebrow">TRADING WORKSPACE</p><h1>Market Dashboard</h1><p class="muted">Welcome back, {{ user.full_name }}. Follow prices and manage your simulated portfolio.</p></div><div class="market-status"><i class="{% if market_open %}open{% else %}closed{% endif %}"></i><b>{% if market_open %}Market Open{% else %}Market Closed{% endif %}</b><small>{{ settings.open_time }} – {{ settings.close_time }} · Local server time</small></div></section>
+<section class="summary">
+<div class="metric"><span>Cash balance</span><strong>${{ '%.2f'|format(user.cash_balance) }}</strong></div>
+<div class="metric"><span>Listed stocks</span><strong>{{ stocks|length }}</strong></div>
+<div class="metric"><span>Portfolio value</span><strong>${{ '%.2f'|format(holdings|sum(attribute='market_value')) }}</strong></div>
+<div class="metric"><span>Trading calendar</span><strong>{{ 'Weekdays' if settings.weekdays_only else 'Every day' }}</strong></div>
+</section>
+<section id="market" class="panel"><div class="section-head"><div><h2>Available stocks</h2><p class="muted">Choose a stock to submit a simulated market order.</p></div><input id="stockSearch" placeholder="Search ticker or company…" aria-label="Search stocks"></div>
+<div class="table-scroll"><table><thead><tr><th>Stock</th><th>Current price</th><th>Available volume</th><th>Market cap</th><th>Open</th><th>High</th><th>Low</th><th>Trade</th></tr></thead><tbody id="stocksTable">
+{% for s in stocks %}<tr class="stock-row stock-detail-trigger" tabindex="0" role="button" aria-label="View details for {{ s.ticker }}" data-company="{{ s.company_name|e }}" data-ticker="{{ s.ticker|e }}" data-price="{{ '%.2f'|format(s.current_price) }}" data-volume="{{ s.available_volume }}" data-market-cap="{{ '%.2f'|format(s.current_price*s.available_volume) }}" data-open="{{ '%.2f'|format(s.opening_price) }}" data-high="{{ '%.2f'|format(s.day_high) }}" data-low="{{ '%.2f'|format(s.day_low) }}"><td><b>{{ s.ticker }}</b><small>{{ s.company_name }}</small></td><td class="price">${{ '%.2f'|format(s.current_price) }}</td><td>{{ '{:,}'.format(s.available_volume) }}</td><td>${{ '{:,.2f}'.format(s.current_price*s.available_volume) }}</td><td>${{ '%.2f'|format(s.opening_price) }}</td><td>${{ '%.2f'|format(s.day_high) }}</td><td>${{ '%.2f'|format(s.day_low) }}</td><td><button class="small-btn trade-toggle" data-ticker="{{ s.ticker }}">Trade</button></td></tr>
+<tr class="trade-row hidden" id="trade-{{ s.ticker }}"><td colspan="8"><form method="post" action="{{ url_for('create_order') }}" class="trade-form"><input type="hidden" name="ticker" value="{{ s.ticker }}"><label>Side<select name="side"><option value="BUY">Buy</option><option value="SELL">Sell</option></select></label><label>Shares<input type="number" name="shares" min="1" step="1" value="1" required></label><span>Current market price: <b>${{ '%.2f'|format(s.current_price) }}</b></span><button class="primary">Submit pending order</button></form></td></tr>{% endfor %}
+</tbody></table></div><p class="footnote">Market capitalization is calculated as current price × available share volume. Prices are simulated.</p></section>
+<section class="two-col">
+<div id="portfolio" class="panel"><div class="section-head"><div><h2>Portfolio & cash</h2><p class="muted">Your current holdings and cash account.</p></div></div>
+<div class="table-scroll"><table><thead><tr><th>Stock</th><th>Shares</th><th>Price</th><th>Value</th></tr></thead><tbody>{% for h in holdings %}<tr><td><b>{{ h.ticker }}</b><small>{{ h.company_name }}</small></td><td>{{ h.shares }}</td><td>${{ '%.2f'|format(h.current_price) }}</td><td>${{ '%.2f'|format(h.market_value) }}</td></tr>{% else %}<tr><td colspan="4" class="empty">No stock holdings yet.</td></tr>{% endfor %}</tbody></table></div>
+<div class="cash-actions"><form method="post" action="{{ url_for('cash_action') }}"><input type="hidden" name="action" value="deposit"><label>Deposit cash<input name="amount" type="number" min=".01" step=".01" placeholder="Amount" required></label><button class="primary">Deposit</button></form><form method="post" action="{{ url_for('cash_action') }}"><input type="hidden" name="action" value="withdraw"><label>Withdraw cash<input name="amount" type="number" min=".01" step=".01" placeholder="Amount" required></label><button class="secondary">Withdraw</button></form></div>
+</div>
+<div class="panel"><div class="section-head"><div><h2>Pending orders</h2><p class="muted">Execute during market hours or cancel before execution.</p></div></div>
+{% for o in orders %}<div class="order-item"><div><b>{{ o.side }} {{ o.shares }} {{ o.ticker }}</b><small>Submitted {{ o.created_at[:16].replace('T',' ') }} · Requested ${{ '%.2f'|format(o.requested_price) }}</small></div><div class="order-actions"><form method="post" action="{{ url_for('execute_order',order_id=o.id) }}"><button class="primary">Execute</button></form><form method="post" action="{{ url_for('cancel_order',order_id=o.id) }}"><button class="danger">Cancel</button></form></div></div>{% else %}<p class="empty">No pending orders.</p>{% endfor %}
+</div></section>
+<section id="activity" class="panel"><div class="section-head"><div><h2>Transaction history</h2><p class="muted">Completed trades and cash account activity.</p></div></div><div class="table-scroll"><table><thead><tr><th>Date</th><th>Type</th><th>Stock</th><th>Shares / Amount</th><th>Price</th><th>Total</th><th>Description</th></tr></thead><tbody>{% for t in transactions %}<tr><td>{{ t.created_at[:16].replace('T',' ') }}</td><td>{{ t.type }}</td><td>{{ t.ticker or '—' }}</td><td>{{ t.shares if t.stock_id else '$%.2f'|format(t.total) }}</td><td>{{ ('$%.2f'|format(t.price)) if t.stock_id else '—' }}</td><td>${{ '%.2f'|format(t.total) }}</td><td>{{ t.description or '' }}</td></tr>{% else %}<tr><td colspan="7" class="empty">No transactions recorded yet.</td></tr>{% endfor %}</tbody></table></div></section>
+{% if user.role=='admin' %}<section id="admin" class="panel admin-panel"><div class="section-head"><div><p class="eyebrow">ADMINISTRATION</p><h2>Market management</h2><p class="muted">Create stocks and control the trading calendar.</p></div></div>
+<div class="admin-grid"><form method="post" action="{{ url_for('add_stock') }}" class="admin-form"><h3>Create a stock</h3><label>Company name<input name="company_name" required></label><label>Stock ticker<input name="ticker" maxlength="10" required></label><label>Available share volume<input name="volume" type="number" min="1" required></label><label>Initial price ($)<input name="initial_price" type="number" min=".01" step=".01" required></label><button class="primary">Create stock</button></form>
+<form method="post" action="{{ url_for('update_market') }}" class="admin-form"><h3>Market hours</h3><label>Opening time<input name="open_time" type="time" value="{{ settings.open_time }}" required></label><label>Closing time<input name="close_time" type="time" value="{{ settings.close_time }}" required></label><label class="check"><input type="checkbox" name="weekdays_only" {% if settings.weekdays_only %}checked{% endif %}> Open weekdays only (Monday–Friday)</label><button class="primary">Save market hours</button></form>
+<form method="post" action="{{ url_for('add_holiday') }}" class="admin-form"><h3>Add market holiday</h3><label>Date<input name="holiday_date" type="date" required></label><label>Description<input name="description" placeholder="e.g. Public holiday"></label><button class="primary">Add holiday</button><div class="holiday-list">{% for h in holidays %}<div><span>{{ h.holiday_date }} · {{ h.description }}</span><form method="post" action="{{ url_for('delete_holiday',holiday_id=h.id) }}"><button class="link-danger">Remove</button></form></div>{% else %}<small>No holidays configured.</small>{% endfor %}</div></form></div></section>{% endif %}
+<footer>Stock Trading System · Training simulation only · No real money or market data</footer>
+</main>
+<div class="modal-backdrop hidden" id="stockDetailsBackdrop" role="presentation">
+ <section class="stock-modal" role="dialog" aria-modal="true" aria-labelledby="stockDetailsTitle">
+  <button type="button" class="modal-close" id="closeStockDetails" aria-label="Close details">×</button>
+  <p class="eyebrow">STOCK OVERVIEW</p><h2 id="stockDetailsTitle">Stock details</h2><p class="muted" id="stockDetailsCompany"></p>
+  <div class="detail-price" id="stockDetailsPrice"></div>
+  <div class="detail-grid">
+   <div><span>Ticker</span><strong id="detailTicker">—</strong></div><div><span>Available volume</span><strong id="detailVolume">—</strong></div>
+   <div><span>Market capitalization</span><strong id="detailMarketCap">—</strong></div><div><span>Opening price</span><strong id="detailOpen">—</strong></div>
+   <div><span>Day high</span><strong id="detailHigh">—</strong></div><div><span>Day low</span><strong id="detailLow">—</strong></div>
+  </div>
+  <button type="button" class="primary modal-done" id="doneStockDetails">Close</button>
+ </section>
+</div>
+<script src="{{ url_for('static',filename='app.js') }}"></script></body></html>
